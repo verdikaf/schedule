@@ -49,6 +49,10 @@ exports.findById = (req, res, next) => {
 }
  
 exports.insert = (req, res, next) => {
+ const errors = validationResult(req);
+ if (!errors.isEmpty()) {
+   return res.status(422).json({ errors: errors.array() });
+ }
  let data = req.body;
  data.password = passwordHash.generate(data.password);
  Users.create(data)
@@ -62,6 +66,10 @@ exports.insert = (req, res, next) => {
 }
  
 exports.updateById = (req, res, next) => {
+ const errors = validationResult(req);
+ if (!errors.isEmpty()) {
+   return res.status(422).json({ errors: errors.array() });
+ }
  const id = req.params.id
  const data = req.body
  if(req.body.password) data.password = passwordHash.generate(req.body.password);
@@ -98,3 +106,8 @@ exports.removeById = (req, res, next) => {
  })
  .catch(err => next(err))
 }
+
+exports.findByUserOrEmail = (value) => {
+  return Users.findOne({$or: [{ noId: value}, { username: value}, { email: value}]})
+ }
+ 

@@ -91,6 +91,11 @@ exports.findAll = (req, res, next) => {
     })
     .catch(err => next(err))
    }
+
+   exports.cekRolesId = (id) => {
+      return Roles.findById(id)
+     }
+     
    
    
    
