@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const { auth } = require('../../../secret');
-const { validation } = require('./users.validation')
+const { validation, paramValidation } = require('./users.validation')
 const c = require('./users.controller')
  
 router.get('/', auth, c.findAll)
-router.get('/:id', auth, c.findById)
+router.get('/:id', auth, paramValidation, c.findById)
 router.post('/', auth, validation,  c.insert)
-router.put('/:id', auth, validation, c.updateById)
+router.put('/:id', auth, paramValidation, validation, c.updateById)
 router.delete('/', auth, c.remove)
-router.delete('/:id', auth, c.removeById)
+router.delete('/:id', auth, paramValidation, c.removeById)
  
 module.exports = router;

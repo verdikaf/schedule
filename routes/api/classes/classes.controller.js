@@ -36,6 +36,10 @@ exports.findAll = (req, res, next) => {
 }
 
 exports.findById = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
     const id = req.params.id
     Classes.findById(id)
     .then(classes => {
@@ -45,6 +49,10 @@ exports.findById = (req, res, next) => {
 }
     
 exports.insert = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
     const data = req.body;
     Classes.create(data)
     .then(classes => {
@@ -57,6 +65,10 @@ exports.insert = (req, res, next) => {
 }
     
 exports.updateById = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
     const id = req.params.id
     const data = req.body
     Classes.findByIdAndUpdate(id, data)
@@ -81,6 +93,10 @@ exports.remove = (req, res, next) => {
 }
     
 exports.removeById = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
     const id = req.params.id
     Classes.findByIdAndRemove(id)
     .then(classes => {
@@ -91,4 +107,8 @@ exports.removeById = (req, res, next) => {
     })
     .catch(err => next(err))
 }
+
+exports.findByName = (value) => {
+  return Rooms.findOne({$or: [{ name: value}]})
+ }
    

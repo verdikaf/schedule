@@ -34,6 +34,10 @@ exports.findAll = (req, res, next) => {
 }
 
 exports.findById = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
     const id = req.params.id
     Rooms.findById(id)
     .then(rooms => {
@@ -43,6 +47,10 @@ exports.findById = (req, res, next) => {
 }
     
 exports.insert = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
     const data = req.body;
     Rooms.create(data)
     .then(rooms => {
@@ -55,6 +63,10 @@ exports.insert = (req, res, next) => {
 }
     
 exports.updateById = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
     const id = req.params.id
     const data = req.body
     Rooms.findByIdAndUpdate(id, data)
@@ -79,6 +91,10 @@ exports.remove = (req, res, next) => {
 }
     
 exports.removeById = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
     const id = req.params.id
     Rooms.findByIdAndRemove(id)
     .then(rooms => {
@@ -89,4 +105,8 @@ exports.removeById = (req, res, next) => {
     })
     .catch(err => next(err))
 }
+
+exports.findByName = (value) => {
+  return Rooms.findOne({$or: [{ name: value}]})
+ }
    

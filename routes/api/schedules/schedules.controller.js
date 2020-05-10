@@ -38,6 +38,10 @@ exports.findAll = (req, res, next) => {
 }
     
 exports.findById = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
     const id = req.params.id
     Schedules.findById(id)
     .populate('class')
@@ -51,6 +55,10 @@ exports.findById = (req, res, next) => {
 }
     
 exports.insert = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
     let data = req.body;
     Schedules.create(data)
     .then(schedules => {
@@ -63,6 +71,10 @@ exports.insert = (req, res, next) => {
 }
     
 exports.updateById = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
     const id = req.params.id
     let data = req.body
     Schedules.findByIdAndUpdate(id, data)
@@ -87,6 +99,10 @@ exports.remove = (req, res, next) => {
 }
     
 exports.removeById = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
     const id = req.params.id
     Schedules.findByIdAndRemove(id)
     .then(schedules => {

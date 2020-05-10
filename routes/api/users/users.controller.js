@@ -39,6 +39,10 @@ exports.findAll = (req, res, next) => {
 }
  
 exports.findById = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  } 
  const id = req.params.id
  Users.findById(id)
  .populate('role')
@@ -96,6 +100,10 @@ exports.remove = (req, res, next) => {
 }
  
 exports.removeById = (req, res, next) => {
+ const errors = validationResult(req);
+ if (!errors.isEmpty()) {
+   return res.status(422).json({ errors: errors.array() });
+ }
  const id = req.params.id
  Users.findByIdAndRemove(id)
  .then(users => {

@@ -1,4 +1,4 @@
-const { body } = require('express-validator');
+const { body, param } = require('express-validator');
 const { cekRolesId } = require('../roles/roles.controller')
 const { findByUserOrEmail } = require('./users.controller')
 
@@ -10,7 +10,7 @@ exports.validation = [
       }
     })
   }),
- body('noId').isInt.trim().custom(value => {
+ body('noId').custom(value => {
     return findByUserOrEmail(value).then(user => {
       if(user){
         return Promise.reject('noId sudah terdaftar')
@@ -34,3 +34,8 @@ exports.validation = [
     })
   }), 
 ]
+
+exports.paramValidation = [
+    param('id').isMongoId().withMessage('Invalid Mongo ID')
+   ]
+   
